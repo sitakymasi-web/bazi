@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ماجراجویی در درس دهم مطالعات اجتماعی</title>
+    <style>
+        :root {
+            --primary: #ff4757;
+            --secondary: #2ed573;
+            --accent: #ffa502;
+            --bg-gradient: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Tahoma', sans-serif;
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            width: 90%;
+            max-width: 800px;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+            margin: 20px;
+        }
+
+        h1 { color: #2f3542; font-size: 2.5em; text-shadow: 2px 2px #f1f2f6; }
+        h2 { color: #57606f; }
+
+        /* صفحه اول */
+        #start-screen input {
+            padding: 15px;
+            width: 80%;
+            border: 3px solid var(--accent);
+            border-radius: 15px;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .btn-main {
+            background: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .btn-main:hover { transform: scale(1.1); background: #ff6b81; }
+
+        /* صفحه مطالعه */
+        #study-screen { display: none; text-align: right; max-height: 70vh; overflow-y: auto; }
+        .study-content { background: #f1f2f6; padding: 20px; border-radius: 15px; line-height: 1.8; font-size: 1.1em; }
+        .study-content strong { color: #e43333; }
+
+        /* صفحه بازی */
+        #game-screen { display: none; }
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border: 2px solid #dfe4ea;
+            border-radius: 15px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: right;
+        }
+        .option-btn:hover { background: #f1f2f6; border-color: var(--accent); }
+        .correct { background-color: var(--secondary) !important; color: white; border-color: #26af5a; }
+        .wrong { background-color: var(--primary) !important; color: white; border-color: #c44569; }
+        
+        .next-question-btn {
+            background: var(--accent);
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 15px;
+            display: none; /* Initially hidden */
+        }
+        .next-question-btn:hover { transform: scale(1.05); background: #ffc107; }
+
+
+        /* صفحه نتیجه */
+        #result-screen { display: none; }
+        .summary-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .summary-table th, .summary-table td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        .summary-table th { background: #f1f2f6; }
+
+        .footer-designer {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            font-size: 1em;
+            color: white;
+            font-weight: bold;
+        }
+
+        .progress-bar { height: 10px; background: #dfe4ea; border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--secondary); width: 0%; transition: 0.3s; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- صفحه اول: ورود -->
+    <div id="start-screen">
+        <h1 style="color: var(--primary);">🚀 آماده‌ای یک قهرمان باشی؟</h1>
+        <p style="font-size: 1.5em;">بیا با هم دنیای مدیریت کشور را کشف کنیم!</p>
+        <input type="text" id="player-name" placeholder="نام خود را اینجا بنویس...">
+        <br>
+        <button class="btn-main" onclick="goToStudy()">شروع ماجراجویی</button>
+        <div class="footer-designer">طراح بازی: فاطمه کیماسی</div>
+    </div>
+
+    <!-- صفحه دوم: مطالعه -->
+    <div id="study-screen">
+        <h2>📖 کتاب هوشمند: درس دهم</h2>
+        <div class="study-content" id="study-text">
+            <!-- محتوا توسط جاوااسکریپت اضافه می‌شود -->
+        </div>
+        <button class="btn-main" onclick="goToGame()" style="margin-top: 20px;">من یاد گرفتم، برویم سراغ بازی! 🎮</button>
+    </div>
+
+    <!-- صفحه سوم: بازی -->
+    <div id="game-screen">
+        <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+        <h2 id="question-number"></h2>
+        <h2 id="question-text">سوال اینجا قرار می‌گیرد</h2>
+        <div id="options-container"></div>
+        <p id="feedback" style="font-size: 1.2em; font-weight: bold;"></p>
+        <button class="btn-main next-question-btn" onclick="nextQuestionOrResults()">سوال بعدی</button>
+    </div>
+
+    <!-- صفحه چهارم: نتایج -->
+    <div id="result-screen">
+        <h1 id="final-msg">🎉 عالی بود!</h1>
+        <h2 id="final-score">امتیاز شما: 0 از 15</h2>
+        <div id="result-summary"></div>
+        <button class="btn-main" onclick="location.reload()">دوباره امتحان کن 🔄</button>
+    </div>
+</div>
+
+<script>
+    let playerName = "";
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let userAnswers = [];
+    let questionAnswered = false; // وضعیت برای اطمینان از اینکه یک بار پاسخ داده شده
+
+    const studyMaterial = `
+        <strong>۱. حکومت چیست؟</strong> برای اداره یک کشور، به افرادی با نقش‌های مشخص نیاز داریم که به آن <strong>حکومت</strong> می‌گوییم.<br>
+        <strong>۲. وظایف حکومت:</strong> وضع قوانین، تأمین رفاه (آموزش، بهداشت، جاده)، رسیدگی به شکایات، حفظ امنیت و دفاع از کشور.<br>
+        <strong>۳. نظام سیاسی ایران:</strong> حکومت ما <strong>جمهوری اسلامی</strong> است. پس از پیروزی انقلاب در سال ۱۳۵۷، حکومت سلطنتی سرنگون شد.<br>
+        <strong>۴. قانون اساسی:</strong> مهم‌ترین قانون هر کشور است و روش اداره آن را مشخص می‌کند.<br>
+        <strong>۵. رهبری:</strong> رهبر باید فقیهی عادل، شجاع و آگاه باشد. اولین رهبر، <strong>امام خمینی (ره)</strong> و پس از ایشان، <strong>آیت‌الله خامنه‌ای</strong> هستند.<br>
+        <strong>۶. قوای سه‌گانه:</strong><br>
+        - <strong>قوه مقننه:</strong> (مجلس و شورای نگهبان) وظیفه <strong>قانون‌گذاری</strong> دارد.<br>
+        - <strong>قوه مجریه:</strong> (دولت/رئیس‌جمهور) وظیفه <strong>اجرای قوانین</strong> و تأمین رفاه مردم را دارد.<br>
+        - <strong>قوه قضاییه:</strong> (دادگاه‌ها) وظیفه <strong>رسیدگی به اختلافات</strong> و اجرای درست قوانین را دارد.<br>
+        <strong>۷. انتخاب مسئولان:</strong> نمایندگان مجلس و رئیس‌جمهور هر <strong>۴ سال یک‌بار</strong> با رأی مردم انتخاب می‌شوند.
+    `;
+
+    const questions = [
+        { q: "وظیفه اصلی قوه مقننه در کشور ما چیست؟", a: ["اجرای قوانین و مدیریت دولت", "قانون‌گذاری و تصویب مقررات", "رسیدگی به شکایت‌های مردم", "حفظ امنیت مرزهای کشور"], c: 1 },
+        { q: "کدام مورد از وظایف اصلی حکومت‌ها محسوب نمی‌شود؟", a: ["تأمین وسایل رفاه و آسایش مردم", "وضع قوانین برای اداره جامعه", "تغییر دادن جغرافیای کشور", "دفاع از کشور در برابر دشمن"], c: 2 },
+        { q: "پس از پیروزی انقلاب اسلامی، چه سالی حکومت جمهوری اسلامی آغاز شد؟", a: ["۱۳۵۷ خورشیدی", "۱۳۵۸ خورشیدی", "۱۳۶۸ خورشیدی", "۱۳۴۸ خورشیدی"], c: 1 },
+        { q: "مهم‌ترین قانون هر کشور که روش اداره آن را مشخص می‌کند چیست؟", a: ["قوانین پلیس و امنیت", "قانون اساسی کشور", "دستورات روزانه دولت", "قوانین بین‌المللی"], c: 1 },
+        { q: "چه کسی بر تمامی فعالیت‌های قوای سه‌گانه نظارت و آن‌ها را هدایت می‌کند؟", a: ["رئیس‌جمهور", "نمایندگان مجلس", "مقام رهبری", "رئیس قوه قضاییه"], c: 2 },
+        { q: "قوه مجریه که همان دولت است، از چه کسانی تشکیل شده است؟", a: ["مجلس و شورای نگهبان", "رئیس‌جمهور و هیئت وزیران", "دادستان‌ها و قاضی‌ها", "سپاه و نیروهای مسلح"], c: 1 },
+        { q: "نمایندگان مجلس شورای اسلامی چگونه و در چه بازه‌هایی انتخاب می‌شوند؟", a: ["توسط دولت، هر ۵ سال یک‌بار", "توسط مردم، هر ۴ سال یک‌بار", "توسط رهبری، هر ۱۰ سال یک‌بار", "توسط قوه قضاییه، هر ۲ سال یک‌بار"], c: 1 },
+        { q: "اگر در جایی قانون رعایت نشود و تخلفی صورت بگیرد، کدام قوه رسیدگی می‌کند؟", a: ["قوه مقننه", "قوه مجریه", "قوه قضاییه", "شورای نگهبان"], c: 2 },
+        { q: "کدام ویژگی برای رهبری جامعه اسلامی الزامی است؟", a: ["ثروت بسیار زیاد و قدرت", "آگاهی، عدالت و شجاعت", "فقط داشتن دانش فنی", "داشتن ارتش قوی"], c: 1 },
+        { q: "وظیفه دولت (قوه مجریه) در حوزه رفاه مردم چیست؟", a: ["فقط وضع قوانین سخت", "ساخت جاده، پل و بیمارستان", "تنها رسیدگی به جرم‌ها", "انتخاب نمایندگان مجلس"], c: 1 },
+        { q: "اولین رهبر انقلاب اسلامی ایران که آن را به پیروزی رساند چه کسی بود؟", a: ["آیت‌الله خامنه‌ای", "امام خمینی (ره)", "رئیس‌جمهور اول", "رئیس مجلس"], c: 1 },
+        { q: "قوه قضاییه شامل کدام بخش‌ها می‌شود؟", a: ["رئیس‌جمهور و وزرا", "مجلس و شورای نگهبان", "دادسراها و دادگاه‌ها", "فقط پلیس و ارتش"], c: 2 },
+        { q: "رئیس‌جمهور هر چند سال یک بار با رأی مستقیم مردم انتخاب می‌شود؟", a: ["هر ۲ سال یک‌بار", "هر ۴ سال یک‌بار", "هر ۵ سال یک‌بار", "هر ۶ سال یک‌بار"], c: 1 },
+        { q: "کدام فعالیت جزو وظایف دولت (قوه مجریه) است؟", a: ["وضع قوانین جدید", "کمک به کشاورزی و صنایع", "نظارت بر دادگاه‌ها", "تعیین قوانین اساسی"], c: 1 },
+        { q: "مردم ایران در چه سالی با رأی بالای ۹۸ درصد به جمهوری اسلامی رأی دادند؟", a: ["۱۳۵۷", "۱۳۵۸", "۱۳۶۸", "۱۳۷۰"], c: 1 }
+    ];
+
+    function goToStudy() {
+        playerName = document.getElementById('player-name').value;
+        if(!playerName) { alert("لطفاً نام خود را وارد کن قهرمان!"); return; }
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('study-screen').style.display = 'block';
+        document.getElementById('study-text').innerHTML = studyMaterial;
+    }
+
+    function goToGame() {
+        document.getElementById('study-screen').style.display = 'none';
+        document.getElementById('game-screen').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        questionAnswered = false; // ریست کردن وضعیت پاسخ سوال
+        const q = questions[currentQuestionIndex];
+        document.getElementById('question-number').innerText = `سوال ${currentQuestionIndex + 1} از ${questions.length}`;
+        document.getElementById('question-text').innerText = q.q;
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        document.getElementById('feedback').innerText = '';
+        document.querySelector('.next-question-btn').style.display = 'none'; // مخفی کردن دکمه سوال بعدی
+
+        const progress = ((currentQuestionIndex) / questions.length) * 100;
+        document.getElementById('progress').style.width = progress + "%";
+
+        q.a.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(i, btn);
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(idx, btn) {
+        if (questionAnswered) return; // جلوگیری از پاسخ دادن دوباره به یک سوال
+        questionAnswered = true;
+
+        const correctIdx = questions[currentQuestionIndex].c;
+        const allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true); // غیرفعال کردن دکمه‌ها بعد از انتخاب
+
+        if(idx === correctIdx) {
+            score++;
+            btn.classList.add('correct');
+            document.getElementById('feedback').innerText = "✅ عالی بود! درست گفتی.";
+            document.getElementById('feedback').style.color = "var(--secondary)";
+        } else {
+            btn.classList.add('wrong');
+            allBtns[correctIdx].classList.add('correct');
+            document.getElementById('feedback').innerText = "❌ اوه! اشتباه شد.";
+            document.getElementById('feedback').style.color = "var(--primary)";
+        }
+
+        userAnswers.push({
+            q: questions[currentQuestionIndex].q,
+            correct: questions[currentQuestionIndex].a[correctIdx],
+            user: questions[currentQuestionIndex].a[idx],
+            isRight: idx === correctIdx
+        });
+
+        document.querySelector('.next-question-btn').style.display = 'block'; // نمایش دکمه سوال بعدی
+    }
+
+    function nextQuestionOrResults() {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        document.getElementById('game-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        
+        const percent = (score / questions.length) * 100;
+        let msg = "";
+        if(percent >= 90) msg = "🏆 فوق‌العاده‌ای! تو یک دانشمند مطالعاتی هستی!";
+        else if(percent >= 70) msg = "🌟 عالی بود! اطلاعاتت خیلی خوب است.";
+        else if(percent >= 50) msg = "👍 خوب بود، اما می‌توانی بهتر شوی!";
+        else msg = "📚 بهتر است دوباره درس را مطالعه کنی.";
+
+        document.getElementById('final-msg').innerText = msg;
+        document.getElementById('final-score').innerText = `امتیاز شما: ${score} از ${questions.length}`;
+
+        let tableHTML = `
+            <table class="summary-table">
+                <tr>
+                    <th>#</th>
+                    <th>سوال</th>
+                    <th>پاسخ شما</th>
+                    <th>پاسخ درست</th>
+                </tr>
+        `;
+
+        userAnswers.forEach((ans, index) => {
+            tableHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td style="text-align:right; font-size:0.8em;">${ans.q}</td>
+                    <td style="color:${ans.isRight ? 'green' : 'red'}">${ans.user}</td>
+                    <td style="color:green">${ans.correct}</td>
+                </tr>
+            `;
+        });
+        tableHTML += `</table>`;
+        document.getElementById('result-summary').innerHTML = tableHTML;
+    }
+</script>
+
+</body>
+</html>
